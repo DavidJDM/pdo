@@ -11,8 +11,7 @@ require ('/home/dkovalev/config.php');
 //Connect to DB
 try {
     //Instantiate a database object
-    $dbh = new PDO("mysql:$database=myDB",
-        "$username", "$password");
+    $dbh = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
     echo "Connected to database";
 }
 catch(PDOException $e) {
