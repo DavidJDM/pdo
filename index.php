@@ -49,7 +49,7 @@ $statement->bindParam(':color', $color, PDO::PARAM_STR);
 
 //Execute
 $statement->execute();
-$id = $dbh->lastInsertId();
+$id = $dbh->lastInsertId() - 1;
 echo "<p>Pet $id inserted successfully.</p>";
 $id = $dbh->lastInsertId();
 echo "<p>Pet $id inserted successfully.</p>";
@@ -157,3 +157,37 @@ foreach($data as $rowData) {
 }
 
 print "</table>";
+
+
+//Define the query
+$sql = "SELECT id, name FROM pets";
+
+//Prepare the statement
+$statement = $dbh->prepare($sql);
+
+//Execute the statement
+$statement->execute();
+
+//Process the result
+$data = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+
+
+print "<br><br><h1>Try It Table</h1><p>List All Animals and Their IDs</p><br><table>";
+
+
+foreach($data as $rowData) {
+    print "<tr>
+                <td>" . $rowData['id'] . "</td>
+                <td>" . $rowData['name'] . "</td>
+            </tr>";
+}
+
+print "</table>";
+
+print "
+<style>
+td, tr, table {
+border: 1px solid black;
+}
+</style>";
