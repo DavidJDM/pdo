@@ -35,6 +35,10 @@ $statement->bindParam(':color', $color, PDO::PARAM_STR);
 //Execute
 $statement->execute();
 
+
+
+
+
 //Bind the parameters
 $type = 'cat';
 $name = 'Kitty';
@@ -49,6 +53,11 @@ $id = $dbh->lastInsertId();
 echo "<p>Pet $id inserted successfully.</p>";
 $id = $dbh->lastInsertId();
 echo "<p>Pet $id inserted successfully.</p>";
+
+
+
+
+
 
 //Define the query
 $sql = "UPDATE pets SET name = :new WHERE name = :old";
@@ -65,6 +74,28 @@ $statement->bindParam(':new', $new, PDO::PARAM_STR);
 //Execute
 $statement->execute();
 
+
+//Change alpaca color
+//Define the query
+$sql = "UPDATE pets SET color = :new WHERE color = :old";
+
+//Prepare the statement
+$statement = $dbh->prepare($sql);
+
+//Bind the parameters
+$old = 'black';
+$new = 'pink';
+$statement->bindParam(':old',$old,PDO::PARAM_STR);
+$statement->bindParam(':new',$new,PDO::PARAM_STR);
+
+//Execute
+$statement->execute();
+
+
+
+
+
+
 //Define the query
 $sql = "DELETE FROM pets WHERE id = :id";
 
@@ -77,6 +108,10 @@ $statement->bindParam(':id', $id, PDO::PARAM_INT);
 
 //Execute
 $statement->execute();
+
+
+
+
 
 //Define the query
 $sql = "SELECT * FROM pets WHERE id = :id";
@@ -94,3 +129,31 @@ $statement->execute();
 //Process the result
 $row = $statement->fetch(PDO::FETCH_ASSOC);
 echo $row['name'] . ", " . $row['type'] . ", " . $row['color'];
+
+
+//Define the query
+$sql = "SELECT petOwners.first as 'First Name', petOwners.last as 'Last Name', pets.name as 'Pet Name' FROM petOwners INNER JOIN pets ON pets.id = petOwners.petId;";
+
+//Prepare the statement
+$statement = $dbh->prepare($sql);
+
+//Execute the statement
+$statement->execute();
+
+//Process the result
+$data = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+
+
+print "<br><br><h1>Try It Table</h1><br><table>";
+
+
+foreach($data as $rowData) {
+    print "<tr>
+                <td>" . $rowData['First Name'] . "</td>
+                <td>" . $rowData['Last Name'] . "</td>
+                <td>" . $rowData['Pet Name'] . "</td>
+            </tr>";
+}
+
+print "</table>";
